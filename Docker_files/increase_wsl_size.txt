@@ -1,0 +1,7 @@
+check filesystem storage
+
+wsl.exe --system -d docker-desktop df -h /mnt/wslg/distro
+
+
+
+wsl --manage docker-desktop --resize 50000

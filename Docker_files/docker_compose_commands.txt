@@ -1,0 +1,9 @@
+Action					Command
+Start (detached/background) 		docker compose up -d
+Stop	 				docker compose stop
+Stop + remove container			docker compose down
+Stop + remove container + volume 	docker compose down -v
+See logs (live) 			docker compose logs -f
+Restart					docker compose restart
+Pull latest image (upgrade)		docker compose pull
+Re-create container with new image	docker compose up -d --force-recreate

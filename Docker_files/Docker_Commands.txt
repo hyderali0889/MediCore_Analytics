@@ -1,0 +1,21 @@
+docker run --name my-postgres -e POSTGRES_PASSWORD=Hello@123 -d -p 5432:5432 -v //d/pgdata:/var/lib/postgresql/data postgres:16
+
+# Interactive password prompt (safest)
+docker exec -it my-mysql mysql -u root -p
+# When prompted, type:   mysecretpassword   (press Enter)
+
+
+# Stop
+docker stop my-postgres
+
+# Start again later
+docker start my-postgres
+
+# See logs if something goes wrong
+docker logs my-postgres
+
+# Remove container (data still safe in volume)
+docker rm my-postgres
+
+# Remove everything including data
+docker volume rm pgdata

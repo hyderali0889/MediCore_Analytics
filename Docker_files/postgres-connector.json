@@ -1,0 +1,17 @@
+{
+  "name": "postgres-cdc-connector",
+  "config": {
+    "connector.class": "io.debezium.connector.postgresql.PostgresConnector",
+    "database.hostname": "your-postgres-host",
+    "database.port": "5432",
+    "database.user": "debezium",
+    "database.password": "debezium_password",
+    "database.dbname": "your_database_name",
+    "database.server.name": "hospital_db",
+    "table.include.list": "public.patients,public.conditions",
+    "publication.autocreate.mode": "filtered",
+    "slot.name": "debezium_slot",
+    "key.converter": "org.apache.kafka.connect.json.JsonConverter",
+    "value.converter": "org.apache.kafka.connect.json.JsonConverter"
+  }
+}

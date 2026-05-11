@@ -1,0 +1,175 @@
+services:
+  # postgres:
+  #   image: postgres:14.21-trixie
+  #   container_name: my-postgres
+  #   restart: unless-stopped          # auto-restart unless you manually stop it
+  #   environment:
+  #     POSTGRES_PASSWORD: Hello@123
+  #     # POSTGRES_DB: employee
+  #     # Optional: set a custom username (default is 'postgres')
+  #     # POSTGRES_USER: myuser
+  #   ports:
+  #     - "5432:5432"                  # host:container
+  #   volumes:
+  #     # Option 1: Named volume (Docker manages it – recommended)
+  #     - pgdata:/var/lib/postgresql/data
+
+  #     # Option 2: Bind mount to D: drive (uncomment if you prefer)
+  #     # - //d/pgdata:/var/lib/postgresql/data
+
+  #   # Optional: healthcheck (good practice)
+  #   healthcheck:
+  #     test: ["CMD-SHELL", "pg_isready -U postgres"]
+  #     interval: 10s
+  #     timeout: 5s
+  #     retries: 5
+  # # Optional: limit resources (good if laptop gets hot/slow)
+  #   deploy:
+  #     resources:
+  #       limits:
+  #         cpus: '2.0'
+  #         memory: 2G
+  # mssql-2019:
+  #   image: mcr.microsoft.com/mssql/server:2019-latest
+  #   container_name: mssql-2019
+  #   restart: unless-stopped
+  #   environment:
+  #     ACCEPT_EULA: "Y"
+  #     MSSQL_PID: Developer
+  #     MSSQL_SA_PASSWORD: Hello@123
+  #   ports:
+  #     - "1433:1433"                # MySQL port on your host
+  #   volumes:
+  #     # Option A: Named volume
+  #      - mssql2019-data:/var/opt/mssql
+  #     # Option B: On D: drive (uncomment & create D:\mysqldata first)
+  #    # - //d/mssql-data:/var/opt/mssql
+  #   healthcheck:
+  #     test: /opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P ${MSSQL_SA_PASSWORD} -Q "SELECT 1" || exit 1
+  #     interval: 15s
+  #     timeout: 10s
+  #     retries: 5
+
+
+  timescaledb:
+    image: timescale/timescaledb:latest-pg18     # or latest-pg16 / latest-pg17
+    # container_name: timescaledb
+    restart: unless-stopped
+    ports:
+      - "5432:5432"                              # Change host port if 5432 is already used
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: Hello@123    # ← Change this!
+      POSTGRES_DB: timeseries_db                 # Default database name
+      TIMESCALEDB_TELEMETRY: "off"               # Recommended to disable telemetry
+    volumes:
+      - timescaledb_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    command: 
+      - postgres 
+      - -c 
+      - shared_preload_libraries=timescaledb
+      - -c 
+      - timescaledb.telemetry_level=off
+
+
+  zookeeper:
+      image: confluentinc/cp-zookeeper:7.5.0
+      container_name: zookeeper
+      restart: unless-stopped
+      ports:
+        - "2181:2181"
+      environment:
+        ZOOKEEPER_CLIENT_PORT: 2181
+        ZOOKEEPER_TICK_TIME: 2000
+      healthcheck:
+        test: ["CMD", "nc", "-z", "localhost", "2181"]   # or use echo ruok | nc
+        interval: 10s
+        timeout: 5s
+        retries: 15
+        start_period: 30s
+
+  kafka:
+    image: confluentinc/cp-kafka:7.5.0
+    container_name: kafka
+    restart: unless-stopped
+    depends_on:
+      zookeeper:
+        condition: service_healthy
+    ports:
+      - "9092:9092"
+      - "29092:29092"
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092,PLAINTEXT_HOST://localhost:29092
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 0
+      KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
+      KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
+      KAFKA_AUTO_CREATE_TOPICS_ENABLE: 'true'
+    healthcheck:
+      test: ["CMD", "kafka-topics", "--bootstrap-server", "localhost:9092", "--list"]
+      interval: 15s
+      timeout: 10s
+      retries: 8
+      start_period: 30s
+
+  kafka-connect:
+    image: debezium/connect:latest
+    container_name: kafka-connect
+    ports:
+      - "8083:8083"
+    environment:
+      BOOTSTRAP_SERVERS: kafka:9092
+      GROUP_ID: 1
+      CONFIG_STORAGE_TOPIC: connect_configs
+      OFFSET_STORAGE_TOPIC: connect_offsets
+      STATUS_STORAGE_TOPIC: connect_statuses
+
+      # JSON converters (simpler for testing)
+      KEY_CONVERTER: org.apache.kafka.connect.json.JsonConverter
+      VALUE_CONVERTER: org.apache.kafka.connect.json.JsonConverter
+      VALUE_CONVERTER_SCHEMAS_ENABLE: "false"
+
+      # Internal converters
+      INTERNAL_KEY_CONVERTER: org.apache.kafka.connect.json.JsonConverter
+      INTERNAL_VALUE_CONVERTER: org.apache.kafka.connect.json.JsonConverter
+
+      # Logging
+      CONNECT_LOG4J_ROOT_LOGLEVEL: INFO
+
+      # Plugin path (Debezium connectors already included)
+      PLUGIN_PATH: /kafka/connect
+
+    depends_on:
+      - kafka
+  materialized:
+    image: materialize/materialized:latest
+    container_name: materialized
+    ports:
+      - "6875:6875"   # SQL port
+    command: -w1 --disable-telemetry
+    depends_on:
+      - kafka
+  metabase:
+    image: metabase/metabase:latest
+    container_name: metabase
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    depends_on:
+      - timescaledb
+    hostname: metabase
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+
+# Define the named volume (persists even if container is removed)
+volumes:
+  timescaledb_data:
+  # mssql2019-data:

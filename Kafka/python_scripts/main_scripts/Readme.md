@@ -1,0 +1,1 @@
+### Barebones scripts folder to add data to kafka without Avro (Registery Cleaner and Schema ) Avro is a testing script to make sure that the data we are inserting into Kafka and then to Postgres is infact ready to be added and error free
