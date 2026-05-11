@@ -1,6 +1,5 @@
-# hospital_project
+# MediCore_Analytics  -  Predictive Healthcare Analytics using Postgress SQL , Metabase, Materilize , Kafka , Debezium and Timescale DB
 
-# 🏥 Real-Time Healthcare Analytics Platform
 
 A scalable, real-time data analytics platform designed to process, analyze, and visualize healthcare admission data using modern data engineering tools.
 
@@ -14,7 +13,7 @@ This project builds a **Real-Time Healthcare Analytics Platform** that ingests s
 - Enable real-time data ingestion using Kafka
 - Store and optimize healthcare data in PostgreSQL
 - Build analytical queries for healthcare insights
-- Visualize KPIs using Grafana dashboards
+- Visualize KPIs using Metabase dashboards
 - Ensure performance, scalability, and reliability
 
 ---
@@ -22,13 +21,13 @@ This project builds a **Real-Time Healthcare Analytics Platform** that ingests s
 ## 🏗️ Architecture
 
 ```
-CSV Dataset → Kafka → PostgreSQL → Grafana 
+CSV Dataset → Kafka → PostgreSQL → Metabase 
 ```
 
 ### Components:
 - **Apache Kafka** – Real-time data streaming
 - **PostgreSQL** – Data storage and analytics
-- **Grafana** – Visualization and dashboards
+- **Metabase** – Visualization and dashboards
 - **Docker** – Containerized deployment
 
 ---
@@ -51,7 +50,7 @@ CSV Dataset → Kafka → PostgreSQL → Grafana
 |------------------|------------------|
 | Data Streaming   | Kafka            |
 | Database         | PostgreSQL       |
-| Visualization    | Grafana          |
+| Visualization    | Metabase          |
 | Backend Scripts  | Python           |
 | Containerization | Docker           |
 
@@ -63,7 +62,7 @@ CSV Dataset → Kafka → PostgreSQL → Grafana
 - Optimized relational schema with indexing
 - Advanced SQL analytics (15+ queries)
 - Materialized views for performance
-- Interactive Grafana dashboards
+- Interactive Metabase dashboards
 - Alerting and monitoring support
 
 ---
@@ -75,7 +74,7 @@ CSV Dataset → Kafka → PostgreSQL → Grafana
 ├── data/                # CSV datasets
 ├── scripts/             # Kafka producers/consumers
 ├── sql/                 # Schema and analytics queries
-├── dashboards/          # Grafana JSON exports
+├── dashboards/          # Metabase JSON exports
 ├── docker/              # Docker Compose setup
 ├── docs/                # Architecture diagrams
 └── README.md
@@ -111,7 +110,7 @@ psql -U postgres -d hospital_project -f sql/schema.sql
 python scripts/producer.py
 ```
 
-### 5. Access Grafana
+### 5. Access Metabase
 
 * URL: `http://localhost:3000`
 * Default login: `admin/admin`
@@ -154,13 +153,13 @@ python scripts/producer.py
 
   * Kafka cluster
   * PostgreSQL database
-  * Grafana dashboards
+  * Metabase dashboards
 
 ---
 
 ## 🔐 Security
 
-* Role-based access in PostgreSQL & Grafana
+* Role-based access in PostgreSQL & Metabase
 * Kafka ACL configuration
 * Environment variable-based secrets
 
