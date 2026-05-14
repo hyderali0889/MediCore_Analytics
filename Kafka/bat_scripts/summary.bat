@@ -7,7 +7,7 @@ docker ps --filter "name=kafka" --format "table {{.Names}}\t{{.Status}}\t{{.Port
 
 echo.
 echo --- Topic: admissions-inbound ---
-docker exec kafka kafka-run-class kafka.tools.GetOffsetShell --bootstrap-server localhost:29092 --topic admissions-inbound --time -1 2>nul || echo Topic not found
+docker exec kafka kafka-run-class kafka.tools.GetOffsetShell --bootstrap-server localhost:29092 --topic pgserver1.public.main --time -1 2>nul || echo Topic not found
 
 echo.
 echo --- Consumer Groups ---

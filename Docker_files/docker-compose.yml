@@ -121,42 +121,21 @@ services:
       start_period: 30s
 
   kafka-connect:
-    image: debezium/connect:latest
+    image: debezium/connect:2.4        # This image already has Debezium built in
     container_name: kafka-connect
+    depends_on:
+      - kafka
     ports:
       - "8083:8083"
     environment:
       BOOTSTRAP_SERVERS: kafka:9092
       GROUP_ID: 1
-      CONFIG_STORAGE_TOPIC: connect_configs
-      OFFSET_STORAGE_TOPIC: connect_offsets
-      STATUS_STORAGE_TOPIC: connect_statuses
+      CONFIG_STORAGE_TOPIC: debezium_connect_configs
+      OFFSET_STORAGE_TOPIC: debezium_connect_offsets
+      STATUS_STORAGE_TOPIC: debezium_connect_statuses
 
-      # JSON converters (simpler for testing)
-      KEY_CONVERTER: org.apache.kafka.connect.json.JsonConverter
-      VALUE_CONVERTER: org.apache.kafka.connect.json.JsonConverter
-      VALUE_CONVERTER_SCHEMAS_ENABLE: "false"
 
-      # Internal converters
-      INTERNAL_KEY_CONVERTER: org.apache.kafka.connect.json.JsonConverter
-      INTERNAL_VALUE_CONVERTER: org.apache.kafka.connect.json.JsonConverter
 
-      # Logging
-      CONNECT_LOG4J_ROOT_LOGLEVEL: INFO
-
-      # Plugin path (Debezium connectors already included)
-      PLUGIN_PATH: /kafka/connect
-
-    depends_on:
-      - kafka
-  materialized:
-    image: materialize/materialized:latest
-    container_name: materialized
-    ports:
-      - "6875:6875"   # SQL port
-    command: -w1 --disable-telemetry
-    depends_on:
-      - kafka
   metabase:
     image: metabase/metabase:latest
     container_name: metabase
@@ -168,6 +147,8 @@ services:
     hostname: metabase
     extra_hosts:
       - "host.docker.internal:host-gateway"
+
+
 
 # Define the named volume (persists even if container is removed)
 volumes:

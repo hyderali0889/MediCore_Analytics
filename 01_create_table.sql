@@ -496,6 +496,9 @@
 -- select a."Name" as "Patient Name" , a."Date of Admission" , a."Discharge Date", b."Name" , b."Date of Admission" as "Readmission Date" from main a Join main b 
 -- on a."Name" = b."Name" and b."Date of Admission" != a."Date of Admission" and b."Date of Admission" - a."Date of Admission" <= interval '30 days' limit 100;
 
+-- select b."Date of Admission" as "Readmission Date" , Count(a."Name") as "Re Admission Rate"  from main a Join main b 
+-- on a."Name" = b."Name" and b."Date of Admission" != a."Date of Admission" and b."Date of Admission" - a."Date of Admission" <= interval '30 days' group by b."Date of Admission" 
+-- order by "Re Admission Rate" desc  limit 100;
 -- select * from readmission_rate_of_hospital
 
 
@@ -521,3 +524,58 @@
 -- group by "Date of Admission" 
 -- order by "Date of Admission"
 --  limit 100; 
+
+
+-- CREATE USER debezium WITH REPLICATION LOGIN PASSWORD 'dbz';
+
+-- GRANT ALL PRIVILEGES ON DATABASE hospital_project TO debezium;
+
+-- Drop user debezium;
+-- REVOKE all Privileges on database hospital_project from debezium;
+
+-- Select * from pg_user;
+
+
+
+-- INSERT INTO main ("Name" , "Age","GENDER" ,"Blood Type" , "Medical Condition" , "Doctor" , "Hospital" , "Insurance Provider" , "Billing Amount" , "Room Number" , "Admission Type" , "Medication" , "Test Results" , "Date of Admission" , "Discharge Date")
+-- VALUES ('John Doe', 30, 'Male', 'O+', 'Hypertension', 'Dr. Smith', 'General Hospital', 'Blue Cross', 1500.00, 101, 'Emergency', 'Lisinopril', 'Normal', '2023-10-01', '2023-10-05');
+-----------------------------------------------
+-- Debezium Setup for Logical Replication:
+-----------------------------------------------
+
+-- This enables logical replication on the table, allowing Debezium to capture changes effectively.
+-- ALTER TABLE public.main REPLICA IDENTITY FULL;
+-- SELECT * FROM pg_replication_slots;
+
+
+-- these commands are used to configure the PostgreSQL server for logical replication, which is necessary for Debezium to capture changes from the database. The settings include enabling logical replication, increasing the number of replication slots and WAL senders to accommodate Debezium's requirements, and reloading the configuration to apply the changes without restarting the server.
+-- ALTER SYSTEM SET wal_level = 'logical';
+-- ALTER SYSTEM SET max_replication_slots = 4;
+-- ALTER SYSTEM SET max_wal_senders = 4;
+
+-- this command is used to reload the PostgreSQL configuration after making changes to the system settings. It allows the new settings to take effect without needing to restart the database server.
+-- SELECT pg_reload_conf();
+
+-- Check the current settings to ensure they have been applied correctly:
+-- SHOW wal_level;
+-- SHOW max_replication_slots;
+-- SHOW max_wal_senders;
+-- This command create a PUBLICATION named 'debezium_pub' for all tables in the public schema. This publication will be used by Debezium to subscribe to changes in the database and capture them for real-time data streaming.
+-- CREATE PUBLICATION debezium_pub FOR TABLE public.main;
+
+-- Drop Publication IF EXISTS debezium_pub;
+
+-- This command creates a logical replication slot named 'debezium_slot' using the 'pgoutput' plugin, which is compatible with Debezium. The replication slot will capture changes from the database and allow Debezium to read those changes for real-time data streaming.
+-- SELECT slot_name, plugin, active FROM pg_replication_slots;
+
+-- SELECT * FROM pg_publication_tables;
+
+
+-- SELECT column_name, constraint_name 
+-- FROM information_schema.key_column_usage 
+-- WHERE table_name = 'main';
+-- SHOW hba_file;
+
+-- Check current pg_hba rules loaded in memory
+-- SELECT type, database, user_name, address, auth_method 
+-- FROM pg_hba_file_rules;

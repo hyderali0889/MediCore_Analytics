@@ -135,10 +135,10 @@ Focus: Build Metabase dashboards and integrate real-time elements.
   - Estimated Effort: 8 hours.
 
 - **Day 13: Real-Time Integration with Kafka**
-  - Set up Materilize ( After connecting it to kafka) as a Metabase data source.
-  - Create alert panels: E.g., for emergency surges (using Kafka metrics).
-  - Simulate real-time streaming: Run producer in loop with new events; verify dashboard updates.
-  - Add notifications: Configure Metabase alerts for thresholds (e.g., high readmissions).
+  - Set up Materilize ( After connecting it to kafka) as a Metabase data source.    Done
+  - Create alert panels: E.g., for emergency surges (using Kafka metrics).      Done
+  - Simulate real-time streaming: Run producer in loop with new events; verify dashboard updates.     Done
+  - Add notifications: Configure Metabase alerts for thresholds (e.g., high readmissions).  Done
   - Milestone: Real-time elements integrated.
   - Estimated Effort: 7 hours.
 
@@ -151,10 +151,10 @@ Focus: Build Metabase dashboards and integrate real-time elements.
   - Estimated Effort: 6 hours.
 
 - **Day 15: Initial Testing and Iteration**
-  - Run end-to-end tests: Ingest new data via Kafka → Query in PostgreSQL → Visualize in Metabase.
-  - Test scalability: Query with full 300k rows; measure times.
-  - Gather feedback: Simulate stakeholder review (e.g., self-review against objectives).
-  - Fix bugs: E.g., query optimizations or UI tweaks.
+  - Run end-to-end tests: Ingest new data via Kafka → Query in PostgreSQL → Visualize in Metabase.  Done
+  - Test scalability: Query with full 300k rows; measure times.   Done
+  - Gather feedback: Simulate stakeholder review (e.g., self-review against objectives).    Done
+  - Fix bugs: E.g., query optimizations or UI tweaks.   Done
   - Milestone: Integrated system tested; initial bugs resolved.
   - Estimated Effort: 8 hours.
 
@@ -165,7 +165,7 @@ Focus: Ensure quality, deploy, and wrap up.
 
 - **Day 16: Comprehensive Testing**
   - Unit tests: For SQL functions/views (using pgTAP or scripts).
-  - Integration tests: Kafka throughput, data consistency (e.g., compare ingested vs. original CSV).
+  - Integration tests: Kafka throughput, data consistency (e.g., compare ingested vs. original CSV).    Done 300,000 Rows in kafka and postgres
   - Load tests: Simulate 1k concurrent queries using tools like pgbench.
   - Edge cases: Test with invalid data, high-volume streams.
   - Milestone: Test suite passed; coverage >80%.
