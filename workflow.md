@@ -189,7 +189,7 @@ Focus: Ensure quality, deploy, and wrap up.
 
 - **Day 19: Final Deployment and Validation**
   - Deploy to production-like env; load full data.            Done all 300,000 Rows added
-  - Validate: Run all queries/dashboards; confirm real-time updates.              
+  - Validate: Run all queries/dashboards; confirm real-time updates.        Done           
   - Security audit: Check for vulnerabilities (e.g., SQL injection, Kafka ACLs).    
   - Backup strategy: Set up pg_dump for DB, snapshots for Kafka.    
   - Milestone: Platform deployed and validated.
