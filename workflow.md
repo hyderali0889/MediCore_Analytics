@@ -143,10 +143,10 @@ Focus: Build Metabase dashboards and integrate real-time elements.
   - Estimated Effort: 7 hours.
 
 - **Day 14: Complete Dashboards and Security**
-  - Finalize remaining panels (e.g., for Questions 9-15: medication pivots, patient journeys).
-  - Add user roles in Metabase: Viewer, Editor for different stakeholders.
-  - Secure integrations: Enable authentication in Kafka/PostgreSQL/Metabase.
-  - Export dashboards as JSON for version control.
+  - Finalize remaining panels (e.g., for Questions 9-15: medication pivots, patient journeys).    Done
+  - Add user roles in Metabase: Viewer, Editor for different stakeholders.    Done
+  - Secure integrations: Enable authentication in Kafka/PostgreSQL/Metabase.      Done
+  - Export dashboards as JSON for version control.        Exported as PDF Done
   - Milestone: All dashboards built and secured.
   - Estimated Effort: 6 hours.
 
@@ -173,25 +173,25 @@ Focus: Ensure quality, deploy, and wrap up.
 
 - **Day 17: Optimization and Performance Tuning**
   - Analyze slow components: Use EXPLAIN on queries; refactor as needed.
-  - Optimize Kafka: Partition topics, adjust batch sizes.
+  - Optimize Kafka: Partition topics, adjust batch sizes.   Done
   - Tune Metabase: Cache queries, optimize panel refreshes.
   - Benchmark: Achieve <5s query times, <1s ingestion.
   - Milestone: System optimized for production-like loads.
   - Estimated Effort: 7 hours.
 
 - **Day 18: Deployment Preparation**
-  - Containerize full stack: Write Docker Compose for PostgreSQL + Kafka + Metabase.
-  - Deploy to cloud (e.g., AWS EC2 or EKS): Set up instances, migrate data.
-  - Configure monitoring: Add Prometheus/Metabase for system metrics.
-  - Test deployment: Run in staging environment.
+  - Containerize full stack: Write Docker Compose for PostgreSQL + Kafka + Metabase.      Done
+  - Deploy to cloud (e.g., AWS EC2 or EKS): Set up instances, migrate data.     Skipped Not needed
+  - Configure monitoring: Add Prometheus/Metabase for system metrics.           Done
+  - Test deployment: Run in staging environment.          Already Running
   - Milestone: Deployable stack ready.
   - Estimated Effort: 8 hours.
 
 - **Day 19: Final Deployment and Validation**
-  - Deploy to production-like env; load full data.
-  - Validate: Run all queries/dashboards; confirm real-time updates.
-  - Security audit: Check for vulnerabilities (e.g., SQL injection, Kafka ACLs).
-  - Backup strategy: Set up pg_dump for DB, snapshots for Kafka.
+  - Deploy to production-like env; load full data.            Done all 300,000 Rows added
+  - Validate: Run all queries/dashboards; confirm real-time updates.              
+  - Security audit: Check for vulnerabilities (e.g., SQL injection, Kafka ACLs).    
+  - Backup strategy: Set up pg_dump for DB, snapshots for Kafka.    
   - Milestone: Platform deployed and validated.
   - Estimated Effort: 6 hours.
 
