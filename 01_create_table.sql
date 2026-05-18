@@ -343,9 +343,9 @@
 
 -- ## 12. 30-Day Readmission Rate
 
-
+-- EXPLAIN ANALYZE
 -- select a."Name" , a."Date of Admission" , a."Discharge Date", b."Name" , b."Date of Admission" as "Readmission Date" from main a Join main b 
--- on a."Name" = b."Name" and b."Date of Admission" != a."Date of Admission" and b."Date of Admission" - a."Date of Admission" <= interval '30 days' limit 100;
+-- on a."Name" = b."Name" and b."Date of Admission" != a."Date of Admission" and b."Date of Admission" - a."Date of Admission" <= interval '30 days' ;
 -- SELECT *
 -- FROM (
 --     SELECT
@@ -363,6 +363,8 @@
 
 
 -- ```sql
+
+-- 
 -- WITH next_admission AS (
 --     SELECT 
 --         patient_id,

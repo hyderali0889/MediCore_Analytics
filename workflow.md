@@ -164,18 +164,24 @@ Focus: Build Metabase dashboards and integrate real-time elements.
 Focus: Ensure quality, deploy, and wrap up.
 
 - **Day 16: Comprehensive Testing**
-  - Unit tests: For SQL functions/views (using pgTAP or scripts).
+  - Unit tests: For SQL functions/views (using pgTAP or scripts).   Done
   - Integration tests: Kafka throughput, data consistency (e.g., compare ingested vs. original CSV).    Done 300,000 Rows in kafka and postgres
-  - Load tests: Simulate 1k concurrent queries using tools like pgbench.
-  - Edge cases: Test with invalid data, high-volume streams.
+  - Load tests: Simulate 1k concurrent queries using tools like pgbench.    Done Avg query time is 1.3113 secs
+  - Edge cases: Test with invalid data, high-volume streams.      Done
   - Milestone: Test suite passed; coverage >80%.
   - Estimated Effort: 7 hours.
 
 - **Day 17: Optimization and Performance Tuning**
-  - Analyze slow components: Use EXPLAIN on queries; refactor as needed.
+  - Analyze slow components: Use EXPLAIN on queries; refactor as needed.    Done, Joins were Refactored to use LEAD Function to increase query execution times
   - Optimize Kafka: Partition topics, adjust batch sizes.   Done
-  - Tune Metabase: Cache queries, optimize panel refreshes.
-  - Benchmark: Achieve <5s query times, <1s ingestion.
+  - Tune Metabase: Cache queries, optimize panel refreshes.     Done
+  - Benchmark: Achieve <5s query times, <1s ingestion.      Done
+  - ========== BENCHMARK RESULTS ==========
+      Total Queries Executed : 1000
+      Total Execution Time   : 146.21s
+      Average Query Time     : 1.3113s
+      Queries Per Second     : 6.84
+
   - Milestone: System optimized for production-like loads.
   - Estimated Effort: 7 hours.
 
